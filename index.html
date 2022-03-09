@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="icon" href="radio.jpeg">
+    
+
+    <title>redio</title>
+    <style>
+        *{
+    margin: 0px;
+
+}
+
+main{
+    width: 360px;
+  
+    position: absolute;
+    left: 50%;
+    
+    transform:translateX(-50%)
+}
+img{
+    
+    height: 200px;
+
+    
+   
+}
+header{
+    height: 300px;
+    margin-top: 22px;
+    text-align: center;
+    color: chocolate;
+}
+header h2{
+    margin: 20px 0px;
+}
+#con{
+    background-color: rgb(10, 206, 255);
+
+}
+header p {
+    font-size: 25px;
+}
+#bu{
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+
+}
+#bu img{
+    width: 40px;
+    height: 40px;
+    margin: 0 17px;
+}
+#voice{
+    text-align:center;
+}
+#voice input{
+    width: 100%;
+
+}
+input[type="range" i] {
+    -webkit-appearance: none;
+    background-color: pink;
+    height: 5px;
+    margin: 0%;
+
+    
+}
+input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    background:darkred;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}
+h2{
+    margin: 15px 0;
+}
+#color{
+    text-align: center;
+    margin-top:25px ;
+}
+#color button{
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+
+}
+#col1{
+    background-color:rebeccapurple;
+}
+
+#col3{
+    background-color:black;
+}
+#col2{
+    background-color:red;
+}
+#col4{
+    background-color:pink;
+}
+
+
+    </style>
+</head>
+<body id="body">
+    
+
+<main id="play">
+
+    <header>
+        <img src="logo1.jpg" alt="">
+        <h2>LIVE RADIO</h2>
+        <P id="text">Radio 1</P>
+    </header>
+    <div id="con">
+        <article id="bu">
+            <img src="back.png" alt="" id="back">
+            <img src="play.png" alt="" id="playla">
+            <img src="next.png" alt="" id="next">
+            <audio src="quran.mp3" id="audl" ></audio>
+           
+
+
+        </article>
+        <article id="voice">
+          
+                
+            <h2>the voice</h2>
+            <input type="range" id="vol">
+            <h2>the speed</h2>
+            <input type="range" id="speed" max="200" min="0">
+        
+        </article>
+        <article id="color">
+            <button type="button" id="col1"></button>
+            <button type="button" id="col2"></button>
+            <button type="button" id="col3"></button>
+            <button type="button" id="col4"></button>
+
+        </article>
+
+    </div>
+
+
+
+</main>
+
+
+<script>
+    class Play{
+    constructor(){
+        let heightMain = document.getElementById("play")
+
+        heightMain.style.height = screen.height +"px";
+        if (screen.width<500) {
+            heightMain.style.width = screen.width +"px"
+
+            
+        }
+        let hie = document.getElementById("con")
+        hie.style.height = screen.height-300+"px"
+
+
+    }
+}
+onload = new Play();
+class Radiol{
+    constructor(){
+        this.aud = document.getElementById("audl")
+      
+       
+
+        this.text = document.getElementById("text")
+        this.Playla = document.getElementById("playla")
+
+        
+        this.itp;
+       this.Playla.addEventListener("click",() => {
+          
+           this.play_one()
+
+       })
+        this.nm_r = []
+        this.nm_r[0] = "RADIO 1"
+        this.nm_r[1] = "RADIO 2"
+        this.nm_r[2] = "RADIO 3"
+      
+
+        this.source= []
+        this.source[0] = "quran.mp3"; 
+        this.source[1] = "qu.mp3.mp3"; 
+        this.source[2] = "q.mp3.mp3"; 
+        this.server = 0;
+        this.sett()
+        document.getElementById("next").addEventListener("click",() => {
+          if(this.server<this.source.length-1){
+              ++this.server;
+              this.itp = false;
+              
+           
+
+          }
+          else{
+              this.server = 0;
+
+          }
+          localStorage.setItem("SAVE", this.server)
+          this.sett()
+
+
+            
+        })
+        document.getElementById("back").addEventListener("click",() => {
+            if (this.server>0){
+                --this.server;
+                this.itp = false;
+                
+            }
+            else{
+                this.server = this.source.length-1
+
+            }
+            localStorage.setItem("SAVE", this.server)
+           this.sett()
+
+
+            
+        })
+
+
+    }
+    sett(){
+        if (localStorage.getItem("SAVE")!=null) {
+            this.server = localStorage.getItem("SAVE")
+            
+        }
+        this.aud.src=this.source[this.server]
+        this.text.innerHTML=this.nm_r[this.server]
+        this.play_one()
+
+    }
+     play_one(){
+         if (this.itp == false) {
+            
+          this.Playla.src = "pause.png"
+          this.aud.play()
+            this.itp=true
+
+
+
+             
+         }
+         else{
+            this.Playla.src = "play.png"
+             this.aud.pause()
+             this.itp=false
+         }
+     }
+
+}
+onload = new Radiol();
+class Volum{
+    constructor() {
+        this.aud = document.getElementById("audl")
+        this.aud.volume = 50/100;
+       this.vol=document.getElementById("vol")
+       this.vol.addEventListener("change",() => {
+        this.aud.volume= this.vol.value/100;
+
+
+
+           
+       })
+       this.speed = document.getElementById("speed")
+       this.aud.playbackRate = 1
+       this.speed.addEventListener("change",() => {
+           this.aud.playbackRate =this.speed.value/100
+           
+       })
+
+
+        
+    }
+
+}
+onload = new Volum()
+class Color{
+    constructor(){
+        this.col1 = document.getElementById("col1")
+        this.col1.addEventListener("click",() => {
+            this.seltt("col1")
+        })
+        this.col2 = document.getElementById("col2")
+        this.col2.addEventListener("click",() => {
+            this.seltt("col2")
+        })
+        this.col3 = document.getElementById("col3")
+        this.col3.addEventListener("click",() => {
+            this.seltt("col3")
+        })
+        this.col4 = document.getElementById("col4")
+        this.col4.addEventListener("click",() => {
+            this.seltt("col4")
+        })
+        if (localStorage.getItem("COLOR")==null){
+            
+            this.body = document.getElementById("body")
+            this.body.style.background="purple"            
+        }
+
+
+
+    }
+    seltt(col){
+        if (col=="col1"){
+            this.body = document.getElementById("body")
+            this.body.style.background="rebeccapurple"
+
+            
+        }
+        else if (col=="col2"){
+            this.body = document.getElementById("body")
+            this.body.style.background="red"
+
+            
+        }
+        else if (col=="col3"){
+            this.body = document.getElementById("body")
+            this.body.style.background="black"
+
+            
+        }
+        else if (col=="col4"){
+            this.body = document.getElementById("body")
+            this.body.style.background="pink"
+
+            
+        }
+        localStorage.setItem("CLOLOR",col)
+        
+
+
+    }
+
+}
+onload = new Color()
+</script>
+</body>
+
+</html>
